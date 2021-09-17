@@ -3,17 +3,121 @@
         <b-jumbotron>
 
             <template #lead>
-                Some question here?
+                {{ currentQuestion.question }}
             </template>
 
             <hr class="my-4">
 
-            <p>
-                List of answers
-            </p>
+            <!-- <p v-for="(answer, index) in answers" :key="index">{{ answer }}</p> -->
 
-            <b-button variant="primary" href="#">Submit</b-button>
-            <b-button variant="success" href="#">Next</b-button>
+            <b-list-group>
+                <b-list-group-item 
+                    v-for="(answer, index) in answers" 
+                    :key="index"
+                    @click.prevent="selectAnswer(index)"
+                    :class="[selectedIndex === index ? 'selected' : '']"
+                >
+                    {{ answer }}
+                </b-list-group-item>
+            </b-list-group>
+
+            <b-button 
+                variant="primary"
+                @click="submitAnswer"
+            >
+                Submit
+            </b-button>
+
+            <b-button 
+                @click="next" 
+                variant="success"
+            >
+                Next
+            </b-button>
+
         </b-jumbotron>
     </div>
 </template>
+
+<script>
+import _ from 'lodash'
+
+export default {
+    props: {
+        currentQuestion: Object,
+        next: Function
+    },
+    data() {
+        return {
+            selectedIndex: null,
+            shuffledAnswers: []
+        }
+    },
+    computed: {
+        answers() {
+            let answers = [...this.currentQuestion.incorrect_answers]
+            answers.push(this.currentQuestion.correct_answer)
+            return answers
+        }
+    },
+    watch: {
+        currentQuestion: {
+            immediate: true,
+            handler() {
+                this.selectedIndex = null
+                this.shuffleAnswers()
+            }
+        }
+    },
+    methods: {
+        selectAnswer(index) {
+            this.selectedIndex = index
+            console.log("index: " + index);
+        },
+
+        shuffleAnswers() {
+            let answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer]
+            this.shuffledAnswers = _.shuffle(answers)
+        },
+
+        submitAnswer() {
+            let isCorrect = false
+
+            if(this.selectedIndex === this.correctIndex) {
+                isCorrect = true
+            }
+        }
+    }
+}
+</script>
+
+<style scoped>
+    .list-group {
+        margin-bottom: 15px;
+    }
+
+    .list-group-item {
+        text-align: left;
+    }
+
+    .list-group-item:hover {
+        background: lightgray;
+        cursor: pointer;
+    }
+
+    .btn {
+        margin: .5rem;
+    }
+
+    .selected {
+        background: lightblue;
+    }
+
+    .correct {
+        background: lightgreen;
+    }
+
+    .incorrect {
+        background: red;
+    }
+</style>
