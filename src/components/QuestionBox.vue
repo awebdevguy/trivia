@@ -68,10 +68,8 @@ export default {
     },
     computed: {
         answers() {
-            let answers = [...this.currentQuestion.incorrect_answers]
             let decoded = []
-            answers.push(this.currentQuestion.correct_answer)
-            answers.forEach((ans, i) => {
+            this.shuffledAnswers.forEach((ans, i) => {
                 decoded[i] = this.decodeHTMLChars(ans)
             });
             return decoded
@@ -94,9 +92,18 @@ export default {
         },
 
         shuffleAnswers() {
+            let correctAnswer = this.currentQuestion.correct_answer
+            console.log("correctAnswer: " + correctAnswer)
             let answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer]
             this.shuffledAnswers = _.shuffle(answers)
-            this.correctIndex = this.shuffledAnswers.indexOf(this.currentQuestion.correct_answer)
+            this.shuffledAnswers.forEach((ans, index) => {
+                console.log("ans: " + ans)
+                if(ans === correctAnswer) {
+                    this.correctIndex = index
+                    return
+                }
+            })
+            console.log("correctIndex: " + this.correctIndex) 
         },
 
         submitAnswer() {
