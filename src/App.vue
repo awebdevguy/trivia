@@ -71,8 +71,9 @@ export default {
 
 // use of async await
     mounted: async function() {
+        const proxyURL = "https://quicors.herokuapp.com/"
         try {
-            const  response = await fetch('https://opentdb.com/api.php?amount=10', { method: 'get'})
+            const  response = await fetch(proxyURL + 'https://opentdb.com/api.php?amount=10', { method: 'get'})
             const json = await response.json()
             console.log(json.results);
             this.questions = json.results
