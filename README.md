@@ -1,4 +1,6 @@
-# quiz
+# TRIVIA
+
+First project using vue.js
 
 ## Project setup
 ```
