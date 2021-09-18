@@ -2,6 +2,8 @@
 
 First project using vue.js
 
+
+
 ## Project setup
 ```
 npm install
