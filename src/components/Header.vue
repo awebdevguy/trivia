@@ -39,7 +39,7 @@ export default {
 
  #select-container {
     position: absolute;
-    top: 3.6rem;
+    top: 4.6rem;
     right: 1rem;
     display: none;
  }
